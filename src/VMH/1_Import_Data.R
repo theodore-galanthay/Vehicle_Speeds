@@ -1,3 +1,5 @@
+#VMH Import
+
 library(DBI)
 library(data.table)
 library(lubridate)
@@ -57,3 +59,5 @@ VMH_Raw <- VMH_Raw[Transit_Day >= "2019-10-01" &
                      Transit_Day <= "2020-02-29"]
 
 fwrite(VMH_Raw,"data//processed//VMH_Raw.csv")
+
+odbc::dbDisconnect(con2)
