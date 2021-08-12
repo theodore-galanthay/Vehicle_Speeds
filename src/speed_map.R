@@ -35,3 +35,21 @@ VMH_direction_sf_coords <- do.call(
   rbind
   ,st_geometry(VMH_direction_sf)
 )
+
+closest_VMH <- lapply(
+  seq_along(1:nrow(shape_segments)), FUN = function(x){
+    nn2(
+      VMH_direction_sf_coords
+      ,shape_segments[x,] %>% st_segmentize(5) %>% st_coordinates() %>% .[,1:2] #segment coordinate matrix
+      ,k = 10000
+      ,searchtype = "radius"
+      ,radius = 0.00001*(10/1.11)
+    ) %>%
+      sapply(cbind) %>% #combine
+      as_tibble() %>% #convert so we can pull
+      distinct(nn.idx) %>%
+      pull() %>%
+      sort() %>%
+      VMH_direction_sf[.,]
+  }
+)  
