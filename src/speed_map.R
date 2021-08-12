@@ -24,8 +24,4 @@ VMH_direction_sf <- VMH_Raw[Inbound_Outbound == fifelse(direction == "SB"
   st_as_sf(
     coords = c("Longitude","Latitude")
     ,crs = 4326
-  )
-
-
-#bastard row names
-VMH_direction_sf$rn <- seq_along(1:nrow(VMH_direction_sf))
+  ) %>%  spTransform(CRS(st_crs(7328)$proj4string))
