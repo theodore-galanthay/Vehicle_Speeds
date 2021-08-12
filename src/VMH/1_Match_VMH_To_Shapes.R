@@ -91,9 +91,8 @@ old_gtfs_sf$stop_times %<>% mutate(stop_id = as.character(stop_id))
 current_gtfs <- read_gtfs("data//GTFS Archive//GTFS 2006.zip")
 
 # convert to sf
-current_gtfs_sf <- gtfs_as_sf(current_gtfs) %>% 
+current_gtfs_sf <- gtfs_as_sf(current_gtfs) %>%
   set_hms_times() %>%
-  set_date_service_table() %>%
   set_servicepattern()
 
 #remove trips with no shapes
@@ -233,6 +232,7 @@ closest_VMH %>% lapply(sample_n,10000) %>%
   })
 
 # get dist traveled on shape --------------------------------------------
+# may or may not work
 
 closest_VMH <- lapply(seq_along(1:length(closest_VMH)),function(i){
   
