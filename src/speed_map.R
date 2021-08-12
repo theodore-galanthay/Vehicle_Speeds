@@ -1,6 +1,11 @@
 library(data.table)
 library(leaflet)
 library(openxlsx)
+library(sf)
+library(sp)
+
+lane_type <- c("single bi-directional","separated uni-directional","none")
+direction <- "NB"
 
 shapes  = read.table("C://Users//theodore.galanthay//Downloads//GFI_RevEng//Ted's Bad Code//Vehicle_Speeds//data//GTFS Archive//GTFS 2006//shapes.txt", sep=",",header=TRUE)
 
@@ -23,5 +28,10 @@ VMH_direction_sf <- VMH_Raw[Inbound_Outbound == fifelse(direction == "SB"
 ] %>%
   st_as_sf(
     coords = c("Longitude","Latitude")
-    ,crs = 4326
-  ) %>%  spTransform(CRS(st_crs(7328)$proj4string))
+    ,crs = 7328
+  )
+
+VMH_direction_sf_coords <- do.call(
+  rbind
+  ,st_geometry(VMH_direction_sf)
+)
